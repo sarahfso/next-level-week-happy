@@ -29,7 +29,7 @@ export default function OrphanageData() {
   const [instructions, setInstructions] = useState("");
   const [opening_hours, setOpeningHours] = useState("");
   const [open_on_weekends, setOpenOnWeekends] = useState(true);
-  const [images, setImages] = useState<String[]>([]);
+  const [images, setImages] = useState<string[]>([]);
 
   const navigation = useNavigation();
   const route = useRoute();
@@ -66,6 +66,7 @@ export default function OrphanageData() {
 
     if (status !== "granted") {
       alert("Eita, precisamos de acesso a suas fotos...");
+      return;
     }
 
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -75,7 +76,7 @@ export default function OrphanageData() {
     });
 
     if (result.cancelled) {
-      return false;
+      return;
     }
 
     const { uri: image } = result;
@@ -91,33 +92,31 @@ export default function OrphanageData() {
       <Text style={styles.title}>Dados</Text>
 
       <Text style={styles.label}>Nome</Text>
-      <TextInput
-        style={styles.input}
-        value={name}
-        onChangeText={(text) => setName(text)}
-      />
+      <TextInput style={styles.input} value={name} onChangeText={setName} />
 
       <Text style={styles.label}>Sobre</Text>
       <TextInput
         style={[styles.input, { height: 110 }]}
         multiline
         value={about}
-        onChangeText={(text) => setAbout(text)}
+        onChangeText={setAbout}
       />
 
-      <Text style={styles.label}>Whatsapp</Text>
-      <TextInput style={styles.input} />
+      {/*<Text style={styles.label}>Whatsapp</Text>
+      <TextInput style={styles.input} />*/}
 
       <Text style={styles.label}>Fotos</Text>
 
       <View style={styles.uploadedImagesContainer}>
-        {images.map((image) => (
-          <Image
-            key={image}
-            source={{ uri: image }}
-            style={styles.uploadedImage}
-          />
-        ))}
+        {images.map((image) => {
+          return (
+            <Image
+              key={image}
+              source={{ uri: image }}
+              style={styles.uploadedImage}
+            />
+          );
+        })}
       </View>
 
       <TouchableOpacity style={styles.imagesInput} onPress={handleSelectImages}>
@@ -138,7 +137,7 @@ export default function OrphanageData() {
       <TextInput
         style={styles.input}
         value={opening_hours}
-        onChangeText={(text) => setOpeningHours(text)}
+        onChangeText={setOpeningHours}
       />
 
       <View style={styles.switchContainer}>
@@ -148,7 +147,7 @@ export default function OrphanageData() {
           thumbColor="#fff"
           trackColor={{ false: "#ccc", true: "#39CC83" }}
           value={open_on_weekends}
-          onValueChange={(text) => setOpenOnWeekends(text)}
+          onValueChange={setOpenOnWeekends}
         />
       </View>
 
